@@ -1,3 +1,5 @@
+import uuid
+from flask import Flask, jsonify, request
 from langchain_community.document_loaders import DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
@@ -8,9 +10,21 @@ from langchain_openai import OpenAIEmbeddings
 from langchain import hub
 
 DIR_PATH = "test"
-LLAMA_MODEL_PATH = "/path/to/llama_model.bin"  # Specify the path to your Llama model file
-
 llm = ChatOllama(model="llama3")
+
+app = Flask(__name__)
+
+CUSTOMER_TO_VECTORSTORE = dict()
+
+@app.route('/generate_customer_id', methods=['GET'])
+def generate_customer_id():
+    customer_id = str(uuid.uuid4())
+    return jsonify({"customer_id": customer_id})
+
+@app.route('/create_index', methods=['POST'])
+def create_index():
+    customer_id = request.json.get('customer_id')
+    
 
 def load_documents_from_directory(directory):
     loader = DirectoryLoader(directory)
@@ -34,8 +48,14 @@ prompt = hub.pull("rlm/rag-prompt")
 def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
 
-def invoke_rag_chain(input):
-    # Using LangChain Expressive Language chain syntax
+@app.route('/query', methods=['POST'])
+def invoke_rag_chain():
+    customer_id = request.json.get('customer_id')
+    input_text = request.json.get('query')
+
+    if customer_id not in CUSTOMER_TO_VECTORSTORE:
+        return jsonify({"error": "Retriever not found"}), 404
+
     rag_chain = (
         {"context": retriever | format_docs, "question": RunnablePassthrough()}
         | prompt
@@ -43,7 +63,7 @@ def invoke_rag_chain(input):
         | StrOutputParser()
     )
 
-    return rag_chain.invoke(input)
+    return jsonify({"response": rag_chain.invoke(input_text)})
 
-input = "Tell me about Venkat"
-print(invoke_rag_chain(input))
+if __name__ == '__main__':
+    app.run(port=5000)
