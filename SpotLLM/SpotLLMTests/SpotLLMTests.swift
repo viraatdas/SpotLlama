@@ -1,14 +1,14 @@
 //
-//  SpotLlamaTests.swift
-//  SpotLlamaTests
+//  SpotLLMTests.swift
+//  SpotLLMTests
 //
-//  Created by Viraat Das on 3/24/24.
+//  Created by Das, Viraat on 6/23/24.
 //
 
 import XCTest
-@testable import SpotLlama
+@testable import SpotLLM
 
-final class SpotLlamaTests: XCTestCase {
+final class SpotLLMTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

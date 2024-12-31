@@ -1,13 +1,13 @@
 //
-//  SpotLlamaUITestsLaunchTests.swift
-//  SpotLlamaUITests
+//  SpotLLMUITestsLaunchTests.swift
+//  SpotLLMUITests
 //
-//  Created by Viraat Das on 3/24/24.
+//  Created by Das, Viraat on 6/23/24.
 //
 
 import XCTest
 
-final class SpotLlamaUITestsLaunchTests: XCTestCase {
+final class SpotLLMUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

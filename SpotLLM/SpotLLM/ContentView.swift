@@ -1,8 +1,8 @@
 //
 //  ContentView.swift
-//  SpotLlama
+//  SpotLLM
 //
-//  Created by Viraat Das on 3/24/24.
+//  Created by Das, Viraat on 6/23/24.
 //
 
 import SwiftUI
